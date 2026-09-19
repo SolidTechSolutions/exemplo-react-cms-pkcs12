@@ -1,39 +1,67 @@
-# 🇧🇷 SolidSign API - Front-end de Exemplo: Assinatura CMS/CAdES com PKCS#12 (React)
-
-Este projeto é a contrapartida visual do back-end [`exemplo-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-integracao-cms-pkcs12). Reaproveita a lógica de campos e parâmetros da tela **Assinar CMS** do Portal SolidSign, simplificada: sem login, sem i18n, sem importação de certificado (o `pfxCode` já deve existir) e sem co-assinatura (o back-end de exemplo não suporta `originalFile`).
+# 🇧🇷 SolidSign API - Front-end de Exemplo: Assinatura CMS com PKCS#12 (React)
 
 ## Como funciona
 
-Este front-end **não fala diretamente com a SolidSign API** — ele fala com o back-end de exemplo local, que expõe um endpoint de formulário com CORS liberado (`POST /api/cms/sign/form`) e repassa `authorization`/`baseUrl` que você preenche no formulário. O back-end assina, baixa os `.p7s` resultantes e devolve um único `.zip` pronto pra download.
+Este front-end chama `POST /api/cms/sign/form` (`http://localhost:8080` por padrão) no back-end de exemplo, enviando o `pfxCode` de um certificado PKCS#12 já importado. O back-end assina o(s) documento(s), baixa os resultados e devolve um único `.zip`.
 
-## Pré-requisitos
+## Requisitos
 
-1. Rode o back-end [`exemplo-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-integracao-cms-pkcs12) localmente (`mvn spring-boot:run`, porta padrão `8080`).
-2. Tenha um token JWT válido e um certificado PKCS#12 já importado (`POST /solidsign/dsig/certificates/pkcs12/import`) — o `id` retornado é o `pfxCode`.
+Rode **um** destes back-ends de exemplo localmente (todos implementam o mesmo endpoint de formulário e a mesma porta padrão usada abaixo):
 
-## Rodando
+- **Java**: [`exemplo-java-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-java-integracao-cms-pkcs12)
+- **C#**: [`exemplo-csharp-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-csharp-integracao-cms-pkcs12)
+- **TypeScript**: [`exemplo-typescript-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-typescript-integracao-cms-pkcs12)
+- **Python**: [`exemplo-python-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-python-integracao-cms-pkcs12)
+- **PHP**: [`exemplo-php-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-php-integracao-cms-pkcs12)
+- **Node.js**: [`exemplo-nodejs-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-nodejs-integracao-cms-pkcs12)
+- **JavaScript**: [`exemplo-javascript-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-javascript-integracao-cms-pkcs12)
+
+- Um token JWT válido (`POST /solidsign/auth/token`)
+- Um certificado PKCS#12 já importado (`POST /solidsign/dsig/certificates/pkcs12/import`) — o `id` retornado é o `pfxCode`
+
+## Como rodar
 
 ```bash
 npm install
 npm run dev
 ```
 
-Abra `http://localhost:5173`, preencha o formulário e assine.
+Abra `http://localhost:5173`, preencha o formulário e envie.
+
+## Variáveis do formulário
+
+| Campo | Significado | Default |
+|---|---|---|
+| `baseUrl` | URL base da SolidSign API | `https://www.solidsign.com.br` |
+| `authorization` | Token JWT (Bearer) | (vazio) |
+| `pfxCode` | ID do certificado PKCS#12 importado | (vazio) |
+| `documents` | Documento(s) a assinar | (vazio) |
+| `profile` | Perfil de assinatura PBAD/ETSI | `ADRB` |
+| `hashAlgorithm` | Algoritmo de hash | `SHA256` |
+| `signaturePackaging` | Empacotamento CMS | `ATTACHED` |
 
 ---
 
-# 🇬🇧 SolidSign API - Example Front-end: CMS/CAdES Signing with PKCS#12 (React)
-
-This project is the visual counterpart to the [`exemplo-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-integracao-cms-pkcs12) backend. It reuses the field/parameter logic from the Portal SolidSign **Sign CMS** screen, simplified: no login, no i18n, no certificate import (the `pfxCode` must already exist) and no co-signing (the example backend doesn't support `originalFile`).
+# 🇬🇧 SolidSign API - Example Front-end: CMS Signing with PKCS#12 (React)
 
 ## How it works
 
-This front-end **never talks directly to the SolidSign API** — it talks to the local example backend, which exposes a CORS-enabled form endpoint (`POST /api/cms/sign/form`) and forwards the `authorization`/`baseUrl` you fill in the form. The backend signs, downloads the resulting `.p7s` files and returns a single ready-to-download `.zip`.
+This front-end calls `POST /api/cms/sign/form` (`http://localhost:8080` by default) on the example backend, sending the `pfxCode` of an already-imported PKCS#12 certificate. The backend signs the document(s), downloads the results and returns a single `.zip`.
 
-## Prerequisites
+## Requirements
 
-1. Run the [`exemplo-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-integracao-cms-pkcs12) backend locally (`mvn spring-boot:run`, default port `8080`).
-2. Have a valid JWT token and a PKCS#12 certificate already imported (`POST /solidsign/dsig/certificates/pkcs12/import`) — the returned `id` is the `pfxCode`.
+Run **one** of these example backends locally (all implement the same form endpoint and default port used below):
+
+- **Java**: [`exemplo-java-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-java-integracao-cms-pkcs12)
+- **C#**: [`exemplo-csharp-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-csharp-integracao-cms-pkcs12)
+- **TypeScript**: [`exemplo-typescript-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-typescript-integracao-cms-pkcs12)
+- **Python**: [`exemplo-python-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-python-integracao-cms-pkcs12)
+- **PHP**: [`exemplo-php-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-php-integracao-cms-pkcs12)
+- **Node.js**: [`exemplo-nodejs-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-nodejs-integracao-cms-pkcs12)
+- **JavaScript**: [`exemplo-javascript-integracao-cms-pkcs12`](https://github.com/SolidTechSolutions/exemplo-javascript-integracao-cms-pkcs12)
+
+- A valid JWT token (`POST /solidsign/auth/token`)
+- A PKCS#12 certificate already imported (`POST /solidsign/dsig/certificates/pkcs12/import`) — the returned `id` is the `pfxCode`
 
 ## Running
 
@@ -42,4 +70,16 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173`, fill in the form and sign.
+Open `http://localhost:5173`, fill in the form and submit.
+
+## Form fields
+
+| Field | Meaning | Default |
+|---|---|---|
+| `baseUrl` | SolidSign API base URL | `https://www.solidsign.com.br` |
+| `authorization` | JWT (Bearer) token | (empty) |
+| `pfxCode` | ID of the imported PKCS#12 certificate | (empty) |
+| `documents` | Document(s) to sign | (empty) |
+| `profile` | PBAD/ETSI signature profile | `ADRB` |
+| `hashAlgorithm` | Hash algorithm | `SHA256` |
+| `signaturePackaging` | CMS packaging | `ATTACHED` |
